@@ -1,4 +1,4 @@
-export tojsonschema, jsonwrite, jsonread
+export JSONTarget, tojsonschema, jsonwrite, jsonread
 
 using OrderedCollections
 using Base64
@@ -358,8 +358,16 @@ function acsettype(spec)
   )
 end
 
+"""
+    JSONTarget  
+
+Specifies a serialization target of JSON Schema when
+generating a module.
+"""
+struct JSONTarget <: SerializationTarget end
+
 function generate_module(
-  mod::InterTypeModule, ::Type{ExportTarget{:json}}, path
+  mod::InterTypeModule, ::Type{JSONTarget}, path
   ;ac=JSON3.AlignmentContext(indent=2)
 )
   defs = Pair{String, Object}[]

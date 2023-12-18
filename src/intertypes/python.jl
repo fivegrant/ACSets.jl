@@ -1,3 +1,5 @@
+export PydanticTarget
+
 function topy(intertype::InterType; forward_ref=true)
   @match intertype begin
     I32 => "int"
@@ -139,6 +141,7 @@ from intertypes import SafeInt, InterTypeBase
 from acsets import Ob, Hom, Attr, AttrType, Schema, ACSet
 """
 
+# TODO: Expose this to the user? Write automatically for the user?
 INTERTYPE_PYTHON_MODULE = """
 from typing import Annotated
 
@@ -154,7 +157,18 @@ class InterTypeBase(BaseModel):
         return super().model_dump_json(*args, **kwargs, by_alias=True)
 """
 
-function generate_module(mod::InterTypeModule, ::Type{ExportTarget{:python}}, path)
+
+"""
+    PydanticTarget  
+
+Targets the creation of `.py` files that use the Pydantic library
+which enables integration with the Python language (specifically
+when (de)serializing JSON).
+"""
+struct PydanticTarget <: LanguageTarget end
+
+
+function generate_module(mod::InterTypeModule, ::Type{PydanticTarget}, path)
   outfile = joinpath(path, string(mod.name) * ".py")
   open(outfile, "w") do io
     print(io, PYTHON_PREAMBLE)
