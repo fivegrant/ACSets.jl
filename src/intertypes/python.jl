@@ -1,5 +1,3 @@
-export generate_python_module
-
 function topy(intertype::InterType; forward_ref=true)
   @match intertype begin
     I32 => "int"
@@ -156,7 +154,7 @@ class InterTypeBase(BaseModel):
         return super().model_dump_json(*args, **kwargs, by_alias=True)
 """
 
-function generate_python_module(mod::InterTypeModule, path)
+function generate_module(mod::InterTypeModule, ::Type{ExportTarget{:python}}, path)
   outfile = joinpath(path, string(mod.name) * ".py")
   open(outfile, "w") do io
     print(io, PYTHON_PREAMBLE)
@@ -172,9 +170,4 @@ function generate_python_module(mod::InterTypeModule, path)
       topy(io, name, decl)
     end
   end
-end
-
-
-function generate_python_module(mod::Module, path=".")
-  generate_python_module(mod.Meta, path)
 end
