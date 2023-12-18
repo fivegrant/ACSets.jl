@@ -252,6 +252,10 @@ end
 
 function tojsonschema(type::InterType)
   @match type begin
+    Unit => Object(
+      "type" => "null",
+      "\$comment" => "Unit",
+    )
     I32 => Object(
       "type" => "integer",
       "\$comment" => "I32",

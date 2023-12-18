@@ -45,6 +45,7 @@ end
 
 function tosexp(t::InterType)
   @match t begin
+    Unit => :Unit
     I32 => :I32
     U32 => :U32
     I64 => :I64

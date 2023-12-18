@@ -2,6 +2,7 @@ export generate_python_module
 
 function topy(intertype::InterType; forward_ref=true)
   @match intertype begin
+    Unit => "None"
     I32 => "int"
     U32 => "int"
     I64 => "SafeInt"
